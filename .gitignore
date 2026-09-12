@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.DS_Store
+.env
+.env.*
+!.env.example
+test-results/
+playwright-report/
+coverage/
+.presentation-build/
+
+# Local presentation and reference files; never commit to the website repository.
+/output/

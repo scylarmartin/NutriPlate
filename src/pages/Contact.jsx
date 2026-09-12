@@ -1,0 +1,26 @@
+import { useRef, useState } from 'react';
+import Icon from '../components/Icon.jsx';
+
+export function validateContact(values) {
+  const errors = {};
+  if (values.name.trim().length < 2) errors.name = 'Please enter a name with at least 2 characters.';
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email.trim())) errors.email = 'Please enter a valid email address.';
+  if (values.message.trim().length < 10) errors.message = 'Please write at least 10 characters so we can understand your message.';
+  return errors;
+}
+export default function Contact() {
+  const [values, setValues] = useState({ name: '', email: '', topic: 'Recipe feedback', message: '' });
+  const [errors, setErrors] = useState({});
+  const [success, setSuccess] = useState(false);
+  const formRef = useRef();
+  const summaryRef = useRef();
+  function submit(event) {
+    event.preventDefault();
+    const next = validateContact(values); setErrors(next);
+    if (Object.keys(next).length) { setSuccess(false); requestAnimationFrame(() => summaryRef.current?.focus()); return; }
+    setSuccess(true);
+    requestAnimationFrame(() => document.getElementById('form-success')?.focus());
+  }
+  function change(event) { setValues({ ...values, [event.target.name]: event.target.value }); if (errors[event.target.name]) setErrors({ ...errors, [event.target.name]: undefined }); }
+  return <div className="container page-content"><header className="page-heading"><p className="eyebrow">PULL UP A CHAIR</p><h1 tabIndex={-1}>Let’s talk food.</h1><p>A recipe idea, a question, or a little feedback — we’d like to hear it.</p></header><div className="contact-layout"><aside className="contact-aside"><span className="contact-icon"><Icon name="leaf" size={42} /></span><h2>Made for everyday cooks.</h2><p>NutriPlate brings simple recipe ideas together so choosing your next meal feels a little easier.</p><details open><summary>Have a recipe suggestion?</summary><p>Tell us the dish, the ingredients you love, and what makes it a regular in your kitchen.</p></details><details><summary>Something difficult to use?</summary><p>Describe the page, what you tried, and what happened. Accessibility feedback is always welcome.</p></details><p className="demo-notice"><strong>About this form</strong>This is a demonstration form. It checks your entries locally; messages are not sent or saved.</p></aside><section className="contact-form-panel" aria-labelledby="form-title"><h2 id="form-title">What’s on your mind?</h2><p className="muted small">Fields marked with * are required.</p>{success ? <div className="form-success" id="form-success" tabIndex={-1} role="status"><span className="success-icon"><Icon name="check" size={30} /></span><h3>Your message looks good.</h3><p>All required fields passed validation. This demo has not sent or saved your message.</p><button className="button secondary" onClick={() => { setSuccess(false); setValues({ name: '', email: '', topic: 'Recipe feedback', message: '' }); requestAnimationFrame(() => document.getElementById('contact-name')?.focus()); }}>Try another message <Icon name="arrow" size={18} /></button></div> : <form ref={formRef} onSubmit={submit} noValidate>{Object.values(errors).some(Boolean) && <div className="error-summary" ref={summaryRef} tabIndex={-1} role="alert"><strong>Please check your details.</strong><ul>{Object.entries(errors).filter(([, value]) => value).map(([key, value]) => <li key={key}><a href={`#contact-${key}`} onClick={e => { e.preventDefault(); document.getElementById(`contact-${key}`).focus(); }}>{value}</a></li>)}</ul></div>}<div className="form-row">{[['name', 'Your name', 'text', 'name'], ['email', 'Email address', 'email', 'email']].map(([name, label, type, autoComplete]) => <div className="form-field" key={name}><label htmlFor={`contact-${name}`}>{label} *</label><input id={`contact-${name}`} name={name} type={type} autoComplete={autoComplete} required maxLength={name === 'name' ? 100 : 254} value={values[name]} onChange={change} aria-invalid={Boolean(errors[name])} aria-describedby={errors[name] ? `${name}-error` : undefined} />{errors[name] && <p id={`${name}-error`} className="field-error">{errors[name]}</p>}</div>)}</div><div className="form-field"><label htmlFor="contact-topic">Topic</label><select name="topic" id="contact-topic" value={values.topic} onChange={change}>{['Recipe feedback', 'Recipe suggestion', 'Accessibility feedback', 'General question'].map(topic => <option key={topic}>{topic}</option>)}</select></div><div className="form-field"><label htmlFor="contact-message">Your message *</label><textarea id="contact-message" name="message" rows={6} minLength={10} maxLength={2000} required value={values.message} onChange={change} aria-invalid={Boolean(errors.message)} aria-describedby={`message-hint${errors.message ? ' message-error' : ''}`} placeholder="Tell us a little more…" /><p id="message-hint" className="field-hint">10–2,000 characters. Please leave out sensitive personal information.</p>{errors.message && <p id="message-error" className="field-error">{errors.message}</p>}</div><button className="button primary" type="submit">Check message <Icon name="arrow" size={18} /></button><p className="form-bottom-note">Demo only · Nothing is sent or stored.</p></form>}</section></div></div>;
+}

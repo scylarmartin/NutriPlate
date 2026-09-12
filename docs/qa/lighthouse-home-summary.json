@@ -1,0 +1,77 @@
+{
+  "route": "/",
+  "timestamp": "2026-09-11T02:47:33.864Z",
+  "environment": "Local production preview, Chrome headless, Lighthouse mobile simulation",
+  "scores": {
+    "performance": 91,
+    "accessibility": 100,
+    "best-practices": 100,
+    "seo": 100
+  },
+  "metrics": {
+    "first-contentful-paint": "2.3 s",
+    "largest-contentful-paint": "3.0 s",
+    "total-blocking-time": "0 ms",
+    "cumulative-layout-shift": "0.078"
+  },
+  "failedAudits": [
+    {
+      "id": "first-contentful-paint",
+      "title": "First Contentful Paint",
+      "score": 0.76,
+      "displayValue": "2.3 s"
+    },
+    {
+      "id": "largest-contentful-paint",
+      "title": "Largest Contentful Paint",
+      "score": 0.78,
+      "displayValue": "3.0 s"
+    },
+    {
+      "id": "speed-index",
+      "title": "Speed Index",
+      "score": 0.99,
+      "displayValue": "2.3 s"
+    },
+    {
+      "id": "cumulative-layout-shift",
+      "title": "Cumulative Layout Shift",
+      "score": 0.95,
+      "displayValue": "0.078"
+    },
+    {
+      "id": "interactive",
+      "title": "Time to Interactive",
+      "score": 0.96,
+      "displayValue": "3.0 s"
+    },
+    {
+      "id": "unused-javascript",
+      "title": "Reduce unused JavaScript",
+      "score": 0,
+      "displayValue": "Est savings of 50 KiB"
+    },
+    {
+      "id": "image-delivery-insight",
+      "title": "Improve image delivery",
+      "score": 0,
+      "displayValue": "Est savings of 225 KiB"
+    },
+    {
+      "id": "lcp-discovery-insight",
+      "title": "LCP request discovery",
+      "score": 0
+    },
+    {
+      "id": "network-dependency-tree-insight",
+      "title": "Network dependency tree",
+      "score": 0
+    },
+    {
+      "id": "render-blocking-insight",
+      "title": "Render-blocking requests",
+      "score": 0,
+      "displayValue": "Est savings of 1,050 ms"
+    }
+  ]
+}
